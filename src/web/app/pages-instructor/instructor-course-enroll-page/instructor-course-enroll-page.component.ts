@@ -152,7 +152,7 @@ export class InstructorCourseEnrollPageComponent implements OnInit {
     this.prepareForSubmission(this.existingStudentsHOT, false);
 
     if (this.modifiedStudents.size === 0) {
-      this.errorMessage = 'Empty table';
+      this.errorMessage = 'Please select a student to modify.';
       this.isEnrolling = false;
       return;
     }
