@@ -33,7 +33,7 @@
             <strong>100</strong> students into one course, divide students into
             sections containing no more than
             <strong>100</strong> students.<br />
-            <i class="fas fa-info-circle"></i> Right click on cell to edit
+            <i class="fas fa-info-circle"></i> Right click on cell to modify
             student details.
             <br />
           </p>
@@ -76,7 +76,6 @@
                 [colHeaders]="colHeaders"
                 [columnSorting]="true"
                 [maxCols]="5"
-                [autoRowSize]="true"
                 [stretchH]="'all'"
                 [renderAllRows]="true"
                 [hidden]="isExistingStudentsPanelCollapsed"
@@ -86,13 +85,9 @@
               </hot-table>
             </div>
             <div
-              class="d-flex justify-content-between enroll-students-spreadsheet-buttons"
+              class="d-flex justify-content-end enroll-students-spreadsheet-buttons"
               *ngIf="!isExistingStudentsPanelCollapsed"
             >
-              <div class="d-flex mb-4 mt-2 align-items-center">
-                <div class="box blue-box col-md-6"></div>
-                <div>Currently Editing</div>
-              </div>
               <button
                 [ngClass]="{ 'w-50': isEnrolling }"
                 type="submit"

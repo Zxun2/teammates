@@ -101,13 +101,13 @@ export class InstructorCourseEnrollPageComponent implements OnInit {
             if (i === 3) continue; // cannot edit email
             this.setCellMeta(selection[0].start.row, i, 'readOnly', false);
           }
+          this.selectCell(selection[0].start.row, selection[0].start.col);
         },
       },
     },
   };
 
-  newHotRegisterer: HotTableRegisterer = new HotTableRegisterer();
-  existingHotRegisterer: HotTableRegisterer = new HotTableRegisterer();
+  hotRegisterer: HotTableRegisterer = new HotTableRegisterer();
   newStudentsHOT: string = 'newStudentsHOT';
   existingStudentsHOT: string = 'existingStudentsHOT';
 
@@ -149,10 +149,7 @@ export class InstructorCourseEnrollPageComponent implements OnInit {
   }
 
   submitModifiedData(): void {
-    this.prepareForSubmission(
-      this.existingHotRegisterer,
-      this.existingStudentsHOT
-    );
+    this.prepareForSubmission(this.existingStudentsHOT, false);
 
     if (this.modifiedStudents.size === 0) {
       this.errorMessage = 'Empty table';
@@ -164,7 +161,7 @@ export class InstructorCourseEnrollPageComponent implements OnInit {
 
     if (this.invalidRowsIndex.size > 0) {
       this.setTableStyleBasedOnFieldChecks(
-        this.existingHotRegisterer.getInstance(this.existingStudentsHOT)
+        this.hotRegisterer.getInstance(this.existingStudentsHOT)
       );
       this.isEnrolling = false;
       return;
@@ -176,18 +173,16 @@ export class InstructorCourseEnrollPageComponent implements OnInit {
 
     this.processEnrollRequests(
       this.modifiedStudents,
-      this.existingHotRegisterer,
-      this.existingStudentsHOT
+      this.existingStudentsHOT,
+      'Modification successful. Summary given below.'
     );
-
-    this.modifiedStudents.clear(); // clear cache
   }
 
   submitEnrollData(): void {
-    this.prepareForSubmission(this.newHotRegisterer, this.newStudentsHOT);
+    this.prepareForSubmission(this.newStudentsHOT);
 
     const studentEnrollRequests: Map<number, StudentEnrollRequest> =
-      this.parseUserInput(this.newHotRegisterer, this.newStudentsHOT);
+      this.parseUserInput(this.hotRegisterer, this.newStudentsHOT);
 
     if (studentEnrollRequests.size === 0) {
       this.errorMessage = 'Empty table';
@@ -199,7 +194,7 @@ export class InstructorCourseEnrollPageComponent implements OnInit {
 
     if (this.invalidRowsIndex.size > 0) {
       this.setTableStyleBasedOnFieldChecks(
-        this.newHotRegisterer.getInstance(this.newStudentsHOT)
+        this.hotRegisterer.getInstance(this.newStudentsHOT)
       );
       this.isEnrolling = false;
       return;
@@ -209,15 +204,12 @@ export class InstructorCourseEnrollPageComponent implements OnInit {
       Array.from(studentEnrollRequests.values())
     );
 
-    this.processEnrollRequests(
-      studentEnrollRequests,
-      this.newHotRegisterer,
-      this.newStudentsHOT
-    );
+    this.processEnrollRequests(studentEnrollRequests, this.newStudentsHOT);
   }
 
-  prepareForSubmission(hotRegisterer: HotTableRegisterer, hot: string): void {
+  prepareForSubmission(hot: string, reset: boolean = true): void {
     this.isEnrolling = true;
+    this.isModifying = false;
 
     // reset global variables
     this.errorMessage = '';
@@ -227,9 +219,9 @@ export class InstructorCourseEnrollPageComponent implements OnInit {
     this.modifiedStudentRowsIndex = new Set();
     this.unchangedStudentRowsIndex = new Set();
 
-    const hotInstance: Handsontable = hotRegisterer.getInstance(hot);
+    const hotInstance: Handsontable = this.hotRegisterer.getInstance(hot);
 
-    this.resetTableStyle(hotInstance);
+    reset && this.resetTableStyle(hotInstance);
   }
 
   getHotInstanceColHeaders(hotInstance: Handsontable): string[] {
@@ -246,8 +238,8 @@ export class InstructorCourseEnrollPageComponent implements OnInit {
 
   processEnrollRequests(
     studentEnrollRequests: Map<number, StudentEnrollRequest>,
-    hotRegisterer: HotTableRegisterer,
-    hot: string
+    hot: string,
+    message: string = 'Enrollment successful. Summary given below.'
   ): void {
     const students: Student[] = [];
 
@@ -283,11 +275,7 @@ export class InstructorCourseEnrollPageComponent implements OnInit {
                   studentEnrollRequests.get(index)?.email ===
                   unsuccessfulEnroll.studentEmail
                 ) {
-                  if (hotRegisterer === this.existingHotRegisterer) {
-                    this.invalidRowsIndex.add(index);
-                  } else {
-                    this.invalidRowsIndex.add(index);
-                  }
+                  this.invalidRowsIndex.add(index);
                   break;
                 }
               }
@@ -302,11 +290,7 @@ export class InstructorCourseEnrollPageComponent implements OnInit {
         complete: () => {
           this.showEnrollResults = true;
           this.statusMessage.pop();
-          this.statusMessageService.showSuccessToast(
-            hotRegisterer === this.existingHotRegisterer
-              ? 'Modification successful. Summary given below.'
-              : 'Enrollment successful. Summary given below.'
-          );
+          this.statusMessageService.showSuccessToast(message);
           this.prepareEnrollmentResults(students, studentEnrollRequests);
 
           if (
@@ -316,7 +300,7 @@ export class InstructorCourseEnrollPageComponent implements OnInit {
             this.unchangedStudentRowsIndex.size > 0
           ) {
             this.setTableStyleBasedOnFieldChecks(
-              hotRegisterer.getInstance(hot)
+              this.hotRegisterer.getInstance(hot)
             );
           }
         },
@@ -378,7 +362,6 @@ export class InstructorCourseEnrollPageComponent implements OnInit {
     studentEnrollRequests: Map<number, StudentEnrollRequest>
   ): void {
     this.enrollResultPanelList = this.populateEnrollResultPanelList(
-      this.existingStudents,
       enrolledStudents,
       studentEnrollRequests
     );
@@ -389,7 +372,7 @@ export class InstructorCourseEnrollPageComponent implements OnInit {
         this.existingStudents = resp.students;
         if (!this.isExistingStudentsPanelCollapsed) {
           const existingStudentTable: Handsontable =
-            this.newHotRegisterer.getInstance(this.existingStudentsHOT);
+            this.hotRegisterer.getInstance(this.existingStudentsHOT);
           this.loadExistingStudentsData(
             existingStudentTable,
             this.existingStudents
@@ -543,23 +526,18 @@ export class InstructorCourseEnrollPageComponent implements OnInit {
   private setRowStyle(
     rowsIndex: Set<number>,
     style: string,
-    newStudentsHOTInstance: Handsontable
+    studentsHOTInstance: Handsontable
   ): void {
     for (const index of rowsIndex) {
-      for (
-        let i = 0;
-        i < newStudentsHOTInstance.getDataAtRow(index).length;
-        i++
-      ) {
-        newStudentsHOTInstance.setCellMeta(index, i, 'className', style);
+      for (let i = 0; i < studentsHOTInstance.getDataAtRow(index).length; i++) {
+        studentsHOTInstance.setCellMeta(index, i, 'className', style);
       }
     }
   }
 
   private populateEnrollResultPanelList(
-    existingStudents: Student[],
     enrolledStudents: Student[],
-    enrollRequests: Map<number, StudentEnrollRequest>
+    requests: Map<number, StudentEnrollRequest>
   ): EnrollResultPanel[] {
     const panels: EnrollResultPanel[] = [];
     const studentLists: Student[][] = [];
@@ -572,14 +550,12 @@ export class InstructorCourseEnrollPageComponent implements OnInit {
     }
 
     const emailToIndexMap: Map<string, number> = new Map();
-    enrollRequests.forEach(
-      (enrollRequest: StudentEnrollRequest, index: number) => {
-        emailToIndexMap.set(enrollRequest.email, index);
-      }
-    );
+    requests.forEach((enrollRequest: StudentEnrollRequest, index: number) => {
+      emailToIndexMap.set(enrollRequest.email, index);
+    });
 
     // Identify students not in the enroll list.
-    for (const existingStudent of existingStudents) {
+    for (const existingStudent of this.existingStudents) {
       const enrolledStudent: Student | undefined = enrolledStudents.find(
         (student: Student) => {
           return student.email === existingStudent.email;
@@ -592,12 +568,12 @@ export class InstructorCourseEnrollPageComponent implements OnInit {
 
     // Identify new students, modified students, and students that are modified without any changes.
     for (const enrolledStudent of enrolledStudents) {
-      const unchangedStudent: Student | undefined = existingStudents.find(
+      const unchangedStudent: Student | undefined = this.existingStudents.find(
         (student: Student) => {
           return this.isSameEnrollInformation(student, enrolledStudent);
         }
       );
-      const modifiedStudent: Student | undefined = existingStudents.find(
+      const modifiedStudent: Student | undefined = this.existingStudents.find(
         (student: Student) => {
           return student.email === enrolledStudent.email;
         }
@@ -634,7 +610,7 @@ export class InstructorCourseEnrollPageComponent implements OnInit {
     }
 
     // Identify students that failed to enroll.
-    for (const request of enrollRequests.values()) {
+    for (const request of requests.values()) {
       const enrolledStudent: Student | undefined = enrolledStudents.find(
         (student: Student) => {
           return student.email === request.email;
@@ -716,7 +692,7 @@ export class InstructorCourseEnrollPageComponent implements OnInit {
    * according to user input
    */
   addRows(numOfRows: number): void {
-    this.newHotRegisterer
+    this.hotRegisterer
       .getInstance(this.newStudentsHOT)
       .alter('insert_row_below', [], numOfRows);
   }
@@ -759,12 +735,12 @@ export class InstructorCourseEnrollPageComponent implements OnInit {
     return studentsData.map((student: Student) =>
       headers.map((header: string) => {
         if (header === 'team') {
-          return (student as any).teamName;
+          return student.teamName!;
         }
         if (header === 'section') {
-          return (student as any).sectionName;
+          return student.sectionName!;
         }
-        return (student as any)[header];
+        return student[header as keyof Student]!;
       })
     );
   }
@@ -793,7 +769,15 @@ export class InstructorCourseEnrollPageComponent implements OnInit {
       !this.isExistingStudentsPanelCollapsed;
     this.isLoadingExistingStudents = true;
     const existingStudentsHOTInstance: Handsontable =
-      this.newHotRegisterer.getInstance(this.existingStudentsHOT);
+      this.hotRegisterer.getInstance(this.existingStudentsHOT);
+
+    // Calling REST API only the first time when spreadsheet has no data
+    if (
+      this.getSpreadsheetLength(existingStudentsHOTInstance.getData()) !== 0
+    ) {
+      this.isLoadingExistingStudents = false;
+      return;
+    }
 
     existingStudentsHOTInstance.addHook(
       'afterSetDataAtCell',
@@ -810,8 +794,9 @@ export class InstructorCourseEnrollPageComponent implements OnInit {
               changes[0][0],
               i,
               'className',
-              'edit-row'
+              'modified-row'
             );
+            this.modifiedStudentRowsIndex.add(changes[0][0]);
           }
 
           const data: string[] = existingStudentsHOTInstance.getDataAtRow(
@@ -831,14 +816,6 @@ export class InstructorCourseEnrollPageComponent implements OnInit {
         }
       }
     );
-
-    // Calling REST API only the first time when spreadsheet has no data
-    if (
-      this.getSpreadsheetLength(existingStudentsHOTInstance.getData()) !== 0
-    ) {
-      this.isLoadingExistingStudents = false;
-      return;
-    }
 
     this.studentService
       .getStudentsFromCourse({ courseId: this.courseId })
