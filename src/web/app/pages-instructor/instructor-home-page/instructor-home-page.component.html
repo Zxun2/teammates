@@ -1,9 +1,9 @@
 <h1>Home</h1>
 
-<div class="card bg-light" style="margin-bottom: 20px;" *ngIf="isNewUser">
+<div class="card bg-light" style="margin-bottom: 20px" *ngIf="isNewUser">
   <div class="card-body">
     New to TEAMMATES? You may wish to have a look at our <a href="/web/instructor/getting-started" target="_blank"
-      rel="noopener noreferrer">Getting Started Guide</a>.
+    rel="noopener noreferrer">Getting Started Guide</a>.
   </div>
 </div>
 
@@ -80,8 +80,8 @@
                   ngbTooltip="Archive the course so that it will not be shown in the home page any more (you can still access it from the 'Courses' tab)"
                   (click)="archiveCourse(courseTabModel.course.courseId)"> Archive
                 </a>
-                <a class="btn btn-light btn-sm dropdown-item" tmRouterLink='/web/instructor/courses/edit'
-                  [queryParams]="{courseid: courseTabModel.course.courseId}"> View / Edit
+                <a class="btn btn-light btn-sm dropdown-item" tmRouterLink="/web/instructor/courses/edit"
+                  [queryParams]="{ courseid: courseTabModel.course.courseId }"> View / Edit
                 </a>
                 <!--                <a class="btn btn-light btn-sm dropdown-item"-->
                 <!--                   tmRouterLink='/web/instructor/courses/student-activity-logs' [queryParams]="{courseid: courseTabModel.course.courseId}"> View Logs-->
@@ -106,7 +106,8 @@
         <div class="card-body padding-0 table-responsive" *ngIf="courseTabModel.isTabExpanded" @collapseAnim>
           <tm-loading-retry [shouldShowRetry]="courseTabModel.hasLoadingFailed"
             [message]="'Error loading feedback sessions'" (retryEvent)="loadFeedbackSessions(idx)">
-            <tm-sessions-table *tmIsLoading="!courseTabModel.hasPopulated"
+            <tm-sessions-table
+              *tmIsLoading="!courseTabModel.hasPopulated"
               [sessionsTableRowModels]="courseTabModel.sessionsTableRowModels"
               [sessionsTableRowModelsSortBy]="courseTabModel.sessionsTableRowModelsSortBy"
               [sessionsTableRowModelsSortOrder]="courseTabModel.sessionsTableRowModelsSortOrder"

@@ -1,4 +1,4 @@
-<table class="table table-bordered table-striped margin-bottom-20px">
+<table class="table table-bordered table-striped">
   <thead>
     <tr>
       <th *ngFor="let column of columns" [ngClass]="{'sortable-header': column.sortBy}" (click)="column.sortBy && onClickHeader(column.header)"  [attr.aria-sort]="getAriaSort(column.header)">
@@ -16,11 +16,12 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let row of tableRows;">
+    <tr *ngFor="let row of tableRows">
       <td *ngFor="let item of row" [style]="getStyle(item)">
-        <ndc-dynamic *ngIf="item.customComponent"
-                     [ngComponentOutlet]="item.customComponent.component"
-                     [ndcDynamicInputs]="item.customComponent.componentData"
+        <ndc-dynamic
+          *ngIf="item.customComponent"
+          [ngComponentOutlet]="item.customComponent.component"
+          [ndcDynamicInputs]="item.customComponent.componentData"
         ></ndc-dynamic>
         <ng-container *ngIf="!item.customComponent && item.displayValue">{{ item.displayValue }}</ng-container>
         <ng-container *ngIf="!item.customComponent && !item.displayValue">{{ item.value }}</ng-container>
