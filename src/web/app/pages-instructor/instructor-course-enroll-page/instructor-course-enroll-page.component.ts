@@ -97,7 +97,7 @@ export class InstructorCourseEnrollPageComponent implements OnInit {
         },
         callback(_, selection) {
           const data = this.getDataAtRow(selection[0].start.row);
-          for (let i = 0; i < data.length; i++) {
+          for (let i = 0; i < data.length; i += 1) {
             if (i === 3) continue; // cannot edit email
             this.setCellMeta(selection[0].start.row, i, 'readOnly', false);
           }
@@ -221,7 +221,9 @@ export class InstructorCourseEnrollPageComponent implements OnInit {
 
     const hotInstance: Handsontable = this.hotRegisterer.getInstance(hot);
 
-    reset && this.resetTableStyle(hotInstance);
+    if (reset) {
+      this.resetTableStyle(hotInstance);
+    }
   }
 
   getHotInstanceColHeaders(hotInstance: Handsontable): string[] {
@@ -529,7 +531,11 @@ export class InstructorCourseEnrollPageComponent implements OnInit {
     studentsHOTInstance: Handsontable
   ): void {
     for (const index of rowsIndex) {
-      for (let i = 0; i < studentsHOTInstance.getDataAtRow(index).length; i++) {
+      for (
+        let i = 0;
+        i < studentsHOTInstance.getDataAtRow(index).length;
+        i += 1
+      ) {
         studentsHOTInstance.setCellMeta(index, i, 'className', style);
       }
     }
@@ -788,7 +794,7 @@ export class InstructorCourseEnrollPageComponent implements OnInit {
           for (
             let i = 0;
             i < existingStudentsHOTInstance.getColHeader().length;
-            i++
+            i += 1
           ) {
             existingStudentsHOTInstance.setCellMeta(
               changes[0][0],
