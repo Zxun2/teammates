@@ -1,4 +1,10 @@
-import { Component, ElementRef, Input, OnChanges, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Input,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
 import * as d3 from 'd3';
 import { DataPoint } from '../usage-statistics-page.component';
 
@@ -13,12 +19,14 @@ import { DataPoint } from '../usage-statistics-page.component';
   styleUrls: ['./stats-line-chart.component.scss'],
 })
 export class StatsLineChartComponent implements OnChanges {
-
   @Input()
   data!: DataPoint[];
 
   @Input()
-  timeRange: { startTime: number, endTime: number } = { startTime: 0, endTime: 0 };
+  timeRange: { startTime: number, endTime: number } = {
+    startTime: 0,
+    endTime: 0,
+  };
 
   @Input()
   dataName!: string;
@@ -34,7 +42,7 @@ export class StatsLineChartComponent implements OnChanges {
   private yAxis: any;
   private lineGroup: any;
 
-  constructor(private chartElem: ElementRef) { }
+  constructor(private chartElem: ElementRef) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['data'] && this.data && this.timeRange) {
@@ -64,14 +72,12 @@ export class StatsLineChartComponent implements OnChanges {
     this.yScale = d3
       .scaleLinear()
       .domain([
-          (d3.max(this.data, (d: DataPoint) => d.value) || 0) + 1,
-          (d3.min(this.data, (d: DataPoint) => d.value) || 0) - 1,
+        (d3.max(this.data, (d: DataPoint) => d.value) || 0) + 1,
+        (d3.min(this.data, (d: DataPoint) => d.value) || 0) - 1,
       ])
       .range([0, this.height - 2 * this.margin]);
 
-    this.xScale = d3
-      .scaleTime()
-      .domain([startTime, endTime]);
+    this.xScale = d3.scaleTime().domain([startTime, endTime]);
 
     this.yAxis = this.svgInner
       .append('g')
@@ -105,8 +111,7 @@ export class StatsLineChartComponent implements OnChanges {
 
     this.xAxis.call(xAxis);
 
-    const yAxis = d3
-      .axisLeft(this.yScale);
+    const yAxis = d3.axisLeft(this.yScale);
 
     this.yAxis.call(yAxis);
 
@@ -133,18 +138,18 @@ export class StatsLineChartComponent implements OnChanges {
       .attr('cy', (d: DataPoint) => this.yScale(d.value))
       .attr('fill', '#FFC107')
       .on('mouseover', (event: any, d: DataPoint) => {
-        div.transition()
-          .duration(200)
-          .style('opacity', 0.9);
-        div.html(`Time: ${new Date(d.date).toString()}<br>New ${this.dataName} count: ${d.value}`)
+        div.transition().duration(200).style('opacity', 0.9);
+        div
+          .html(
+            `Time: ${new Date(d.date).toString()}<br>New ${
+              this.dataName
+            } count: ${d.value}`,
+          )
           .style('left', `${event.pageX}px`)
           .style('top', `${event.pageY - 32}px`);
       })
       .on('mouseout', () => {
-        div.transition()
-          .duration(500)
-          .style('opacity', 0);
+        div.transition().duration(500).style('opacity', 0);
       });
   }
-
 }
