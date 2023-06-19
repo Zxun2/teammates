@@ -48,7 +48,7 @@
         [(ngModel)]="instructorName"
       />
       <div class="text-danger mt-2" *ngIf="showNameError">
-        Please enter a valid name.
+        Name cannot be empty.
       </div>
     </div>
 
@@ -64,7 +64,7 @@
         [(ngModel)]="instructorEmail"
       />
       <div class="text-danger mt-2" *ngIf="showEmailError">
-        Please enter a valid email.
+        Email cannot be empty.
       </div>
     </div>
 
@@ -80,7 +80,7 @@
         [(ngModel)]="instructorInstitution"
       />
       <div class="text-danger mt-2" *ngIf="showInstitutionError">
-        Please enter a valid institution.
+        Institution cannot be empty.
       </div>
     </div>
 

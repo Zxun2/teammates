@@ -56,7 +56,7 @@ export class AdminHomePageComponent {
     private simpleModalService: SimpleModalService,
     private statusMessageService: StatusMessageService,
     private linkService: LinkService,
-    private ngbModal: NgbModal
+    private ngbModal: NgbModal,
   ) {}
 
   /**
@@ -74,9 +74,9 @@ export class AdminHomePageComponent {
         continue;
       }
       if (
-        !instructorDetailSplit[0] ||
-        !instructorDetailSplit[1] ||
-        !instructorDetailSplit[2]
+        !instructorDetailSplit[0]
+        || !instructorDetailSplit[1]
+        || !instructorDetailSplit[2]
       ) {
         // TODO handle error
         invalidLines.push(instructorDetail);
@@ -97,8 +97,8 @@ export class AdminHomePageComponent {
   /**
    * Focus out the text area and hide the error message if the text area is empty.
    */
-  focusOutTextArea() {
-    if (this.instructorDetails.length == 0) {
+  focusOutTextArea(): void {
+    if (this.instructorDetails.length === 0) {
       this.showError = false;
     }
   }
@@ -106,12 +106,12 @@ export class AdminHomePageComponent {
   /**
    * Focus out the form and hide the error message if form is empty.
    */
-  focusOutForm() {
+  focusOutForm(): void {
     if (
-      this.instructorName.length +
-        this.instructorEmail.length +
-        this.instructorInstitution.length ==
-      0
+      this.instructorName.length
+        + this.instructorEmail.length
+        + this.instructorInstitution.length
+      === 0
     ) {
       this.showNameError = false;
       this.showEmailError = false;
@@ -124,9 +124,9 @@ export class AdminHomePageComponent {
    */
   validateAndAddInstructorDetail(): void {
     if (
-      this.instructorName ||
-      this.instructorEmail ||
-      this.instructorInstitution
+      this.instructorName
+      || this.instructorEmail
+      || this.instructorInstitution
     ) {
       this.showNameError = !this.instructorName;
       this.showEmailError = !this.instructorEmail;
@@ -134,9 +134,9 @@ export class AdminHomePageComponent {
     }
 
     if (
-      !this.instructorName ||
-      !this.instructorEmail ||
-      !this.instructorInstitution
+      !this.instructorName
+      || !this.instructorEmail
+      || !this.instructorInstitution
     ) {
       return;
     }
@@ -159,8 +159,8 @@ export class AdminHomePageComponent {
   addInstructor(i: number): void {
     const instructor: InstructorData = this.instructorsConsolidated[i];
     if (
-      this.instructorsConsolidated[i].isCurrentlyBeingEdited ||
-      (instructor.status !== 'PENDING' && instructor.status !== 'FAIL')
+      this.instructorsConsolidated[i].isCurrentlyBeingEdited
+      || (instructor.status !== 'PENDING' && instructor.status !== 'FAIL')
     ) {
       return;
     }
@@ -177,7 +177,7 @@ export class AdminHomePageComponent {
       .pipe(
         finalize(() => {
           this.isAddingInstructors = false;
-        })
+        }),
       )
       .subscribe({
         next: (resp: JoinLink) => {
@@ -236,7 +236,7 @@ export class AdminHomePageComponent {
       SimpleModalType.INFO,
       this.registeredInstructorModal,
       undefined,
-      { scrollable: true }
+      { scrollable: true },
     );
 
     this.accountService
@@ -246,13 +246,13 @@ export class AdminHomePageComponent {
         mergeMap((accounts: Account[]) =>
           forkJoin(
             accounts.map((account: Account) =>
-              this.getRegisteredAccountData(account.googleId)
-            )
-          )
+              this.getRegisteredAccountData(account.googleId),
+            ),
+          ),
         ),
         finalize(() => {
           this.isRegisteredInstructorModalLoading = false;
-        })
+        }),
       )
       .subscribe({
         next: (resp: RegisteredInstructorAccountData[]) => {
@@ -266,7 +266,7 @@ export class AdminHomePageComponent {
   }
 
   private getRegisteredAccountData(
-    googleId: string
+    googleId: string,
   ): Observable<RegisteredInstructorAccountData> {
     const getStudentCourses: Observable<Courses> = this.courseService
       .getStudentCoursesInMasqueradeMode(googleId)
@@ -277,7 +277,7 @@ export class AdminHomePageComponent {
             return of({ courses: [] });
           }
           return throwError(() => err);
-        })
+        }),
       );
     const getInstructorCourses: Observable<Courses> = this.courseService
       .getInstructorCoursesInMasqueradeMode(googleId)
@@ -288,14 +288,14 @@ export class AdminHomePageComponent {
             return of({ courses: [] });
           }
           return throwError(() => err);
-        })
+        }),
       );
 
     return forkJoin([getStudentCourses, getInstructorCourses]).pipe(
       map((value: [Courses, Courses]) => {
         const manageAccountLink = this.linkService.generateManageAccountLink(
           googleId,
-          this.linkService.ADMIN_ACCOUNTS_PAGE
+          this.linkService.ADMIN_ACCOUNTS_PAGE,
         );
         return {
           googleId,
@@ -303,7 +303,7 @@ export class AdminHomePageComponent {
           studentCourses: value[0].courses,
           instructorCourses: value[1].courses,
         };
-      })
+      }),
     );
   }
 
@@ -316,7 +316,7 @@ export class AdminHomePageComponent {
     const modalRef: NgbModalRef = this.simpleModalService.openConfirmationModal(
       `Reset account request for <strong>${this.instructorsConsolidated[i].name}</strong>?`,
       SimpleModalType.WARNING,
-      modalContent
+      modalContent,
     );
 
     modalRef.result.then(
@@ -324,7 +324,7 @@ export class AdminHomePageComponent {
         this.accountService
           .resetAccountRequest(
             this.instructorsConsolidated[i].email,
-            this.instructorsConsolidated[i].institution
+            this.instructorsConsolidated[i].institution,
           )
           .subscribe({
             next: (resp: JoinLink) => {
@@ -338,7 +338,7 @@ export class AdminHomePageComponent {
             },
           });
       },
-      () => {}
+      () => {},
     );
   }
 }
