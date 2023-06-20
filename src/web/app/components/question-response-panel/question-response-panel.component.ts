@@ -137,7 +137,6 @@ export class QuestionResponsePanelComponent {
         error: (resp: ErrorMessageOutput) => {
           question.errorMessage = resp.error.message;
           this.statusMessageService.showErrorToast(resp.error.message);
-          console.log('error: ', resp.error.message);
         },
       });
   }
