@@ -125,7 +125,7 @@ overrides:
           ignoreUrls: true
           ignoreComments: false
           ignoreRegExpLiterals: true
-          ignorePattern: (^\} from '.*';)|(^import\s.+\sfrom\s.+;)
+          ignorePattern: "^\\} from '.*';"
       no-console:
         - error
         - allow:

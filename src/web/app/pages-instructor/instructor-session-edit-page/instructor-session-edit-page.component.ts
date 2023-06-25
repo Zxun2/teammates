@@ -66,8 +66,12 @@ import {
   InstructorExtensionTableColumnModel,
   StudentExtensionTableColumnModel,
 } from '../instructor-session-individual-extension-page/extension-table-column-model';
-import { FeedbackSessionTabModel } from './copy-questions-from-other-sessions-modal/copy-questions-from-other-sessions-modal-model';
-import { CopyQuestionsFromOtherSessionsModalComponent } from './copy-questions-from-other-sessions-modal/copy-questions-from-other-sessions-modal.component';
+import {
+  FeedbackSessionTabModel,
+} from './copy-questions-from-other-sessions-modal/copy-questions-from-other-sessions-modal-model';
+import {
+  CopyQuestionsFromOtherSessionsModalComponent,
+} from './copy-questions-from-other-sessions-modal/copy-questions-from-other-sessions-modal.component';
 import { TemplateQuestionModalComponent } from './template-question-modal/template-question-modal.component';
 
 /**
@@ -214,7 +218,7 @@ export class InstructorSessionEditPageComponent extends InstructorSessionBasePag
     private studentService: StudentService,
     private courseService: CourseService,
     private route: ActivatedRoute,
-    private changeDetectorRef: ChangeDetectorRef
+    private changeDetectorRef: ChangeDetectorRef,
   ) {
     super(
       instructorService,
@@ -227,7 +231,7 @@ export class InstructorSessionEditPageComponent extends InstructorSessionBasePag
       simpleModalService,
       progressBarService,
       feedbackSessionActionsService,
-      timezoneService
+      timezoneService,
     );
   }
 
@@ -264,7 +268,7 @@ export class InstructorSessionEditPageComponent extends InstructorSessionBasePag
           .pipe(
             finalize(() => {
               this.isLoadingFeedbackSession = false;
-            })
+            }),
           )
           .subscribe({
             next: (feedbackSession: FeedbackSession) => {
@@ -296,7 +300,7 @@ export class InstructorSessionEditPageComponent extends InstructorSessionBasePag
         .pipe(
           finalize(() => {
             this.sessionEditFormModel.isCopying = false;
-          })
+          }),
         )
         .subscribe((courses: Courses) => {
           this.failedToCopySessions = {};
@@ -313,7 +317,7 @@ export class InstructorSessionEditPageComponent extends InstructorSessionBasePag
                 const requestList: Observable<FeedbackSession>[] = this.createSessionCopyRequestsFromModal(
                   result,
                   this.courseId,
-                  this.feedbackSessionName
+                  this.feedbackSessionName,
                 );
                 this.sessionEditFormModel.isCopying = true;
                 if (requestList.length === 1) {
@@ -321,9 +325,9 @@ export class InstructorSessionEditPageComponent extends InstructorSessionBasePag
                     requestList[0].pipe(
                       finalize(() => {
                         this.sessionEditFormModel.isCopying = false;
-                      })
+                      }),
                     ),
-                    this.modifiedTimestampsModal
+                    this.modifiedTimestampsModal,
                   );
                 }
                 if (requestList.length > 1) {
@@ -331,7 +335,7 @@ export class InstructorSessionEditPageComponent extends InstructorSessionBasePag
                     .pipe(
                       finalize(() => {
                         this.sessionEditFormModel.isCopying = false;
-                      })
+                      }),
                     )
                     .subscribe(() => {
                       this.showCopyStatusMessage(this.modifiedTimestampsModal);
@@ -341,7 +345,7 @@ export class InstructorSessionEditPageComponent extends InstructorSessionBasePag
               (resp: ErrorMessageOutput) => {
                 reject(resp);
                 this.statusMessageService.showErrorToast(resp.error.message);
-              }
+              },
             )
             .catch(() => {
               this.sessionEditFormModel.isCopying = false;
@@ -354,16 +358,16 @@ export class InstructorSessionEditPageComponent extends InstructorSessionBasePag
    * Gets the {@code sessionEditFormModel} with {@link FeedbackSession} entity.
    */
   getSessionEditFormModel(feedbackSession: FeedbackSession, isEditable: boolean = false): SessionEditFormModel {
-    const submissionStart: { date: DateFormat; time: TimeFormat } = this.datetimeService.getDateTimeAtTimezone(
+    const submissionStart: { date: DateFormat, time: TimeFormat } = this.datetimeService.getDateTimeAtTimezone(
       feedbackSession.submissionStartTimestamp,
       feedbackSession.timeZone,
-      true
+      true,
     );
 
-    const submissionEnd: { date: DateFormat; time: TimeFormat } = this.datetimeService.getDateTimeAtTimezone(
+    const submissionEnd: { date: DateFormat, time: TimeFormat } = this.datetimeService.getDateTimeAtTimezone(
       feedbackSession.submissionEndTimestamp,
       feedbackSession.timeZone,
-      true
+      true,
     );
 
     const model: SessionEditFormModel = {
@@ -400,8 +404,8 @@ export class InstructorSessionEditPageComponent extends InstructorSessionBasePag
       isDeleting: false,
       isCopying: false,
       hasVisibleSettingsPanelExpanded:
-        feedbackSession.sessionVisibleSetting !== SessionVisibleSetting.AT_OPEN ||
-        feedbackSession.responseVisibleSetting !== ResponseVisibleSetting.LATER,
+        feedbackSession.sessionVisibleSetting !== SessionVisibleSetting.AT_OPEN
+        || feedbackSession.responseVisibleSetting !== ResponseVisibleSetting.LATER,
       hasEmailSettingsPanelExpanded: !feedbackSession.isClosingEmailEnabled || !feedbackSession.isPublishedEmailEnabled,
     };
 
@@ -409,20 +413,20 @@ export class InstructorSessionEditPageComponent extends InstructorSessionBasePag
     this.instructorDeadlines = feedbackSession.instructorDeadlines;
 
     if (feedbackSession.customSessionVisibleTimestamp) {
-      const customSessionVisible: { date: DateFormat; time: TimeFormat } = this.datetimeService.getDateTimeAtTimezone(
+      const customSessionVisible: { date: DateFormat, time: TimeFormat } = this.datetimeService.getDateTimeAtTimezone(
         feedbackSession.customSessionVisibleTimestamp,
         feedbackSession.timeZone,
-        true
+        true,
       );
       model.customSessionVisibleTime = customSessionVisible.time;
       model.customSessionVisibleDate = customSessionVisible.date;
     }
 
     if (feedbackSession.customResponseVisibleTimestamp) {
-      const customResponseVisible: { date: DateFormat; time: TimeFormat } = this.datetimeService.getDateTimeAtTimezone(
+      const customResponseVisible: { date: DateFormat, time: TimeFormat } = this.datetimeService.getDateTimeAtTimezone(
         feedbackSession.customResponseVisibleTimestamp,
         feedbackSession.timeZone,
-        true
+        true,
       );
       model.customResponseVisibleTime = customResponseVisible.time;
       model.customResponseVisibleDate = customResponseVisible.date;
@@ -441,13 +445,13 @@ export class InstructorSessionEditPageComponent extends InstructorSessionBasePag
       this.sessionEditFormModel.submissionStartDate,
       this.sessionEditFormModel.submissionStartTime,
       this.sessionEditFormModel.timeZone,
-      true
+      true,
     );
     const submissionEndTime: number = this.timezoneService.resolveLocalDateTime(
       this.sessionEditFormModel.submissionEndDate,
       this.sessionEditFormModel.submissionEndTime,
       this.sessionEditFormModel.timeZone,
-      true
+      true,
     );
     let sessionVisibleTime: number = 0;
     if (this.sessionEditFormModel.sessionVisibleSetting === SessionVisibleSetting.CUSTOM) {
@@ -455,7 +459,7 @@ export class InstructorSessionEditPageComponent extends InstructorSessionBasePag
         this.sessionEditFormModel.customSessionVisibleDate,
         this.sessionEditFormModel.customSessionVisibleTime,
         this.sessionEditFormModel.timeZone,
-        true
+        true,
       );
     }
     let responseVisibleTime: number = 0;
@@ -464,7 +468,7 @@ export class InstructorSessionEditPageComponent extends InstructorSessionBasePag
         this.sessionEditFormModel.customResponseVisibleDate,
         this.sessionEditFormModel.customResponseVisibleTime,
         this.sessionEditFormModel.timeZone,
-        true
+        true,
       );
     }
 
@@ -479,7 +483,7 @@ export class InstructorSessionEditPageComponent extends InstructorSessionBasePag
     submissionStartTime: number,
     submissionEndTime: number,
     sessionVisibleTime: number,
-    responseVisibleTime: number
+    responseVisibleTime: number,
   ): void {
     this.sessionEditFormModel.isSaving = true;
     this.sessionEditFormModel.isEditable = false;
@@ -506,7 +510,7 @@ export class InstructorSessionEditPageComponent extends InstructorSessionBasePag
       .pipe(
         finalize(() => {
           this.sessionEditFormModel.isSaving = false;
-        })
+        }),
       )
       .subscribe({
         next: (feedbackSession: FeedbackSession) => {
@@ -537,7 +541,7 @@ export class InstructorSessionEditPageComponent extends InstructorSessionBasePag
     const [affectedStudentModels, affectedInstructorModels] = this.getAffectedIndividualModels(
       submissionEndTimestamp,
       studentDeadlinesToDelete,
-      instructorDeadlinesToDelete
+      instructorDeadlinesToDelete,
     );
 
     const modalRef: NgbModalRef = this.ngbModal.open(ExtensionConfirmModalComponent);
@@ -557,21 +561,21 @@ export class InstructorSessionEditPageComponent extends InstructorSessionBasePag
         },
         () => {
           subscribeIsUserAccept.next(false);
-        }
+        },
       );
     });
   }
 
   private getIndividualDeadlinesToDelete(
-    submissionEndTimestamp: number
+    submissionEndTimestamp: number,
   ): [Record<string, number>, Record<string, number>] {
     const studentDeadlinesToDelete = DeadlineExtensionHelper.getDeadlinesBeforeOrEqualToEndTime(
       this.studentDeadlines,
-      submissionEndTimestamp
+      submissionEndTimestamp,
     );
     const instructorDeadlinesToDelete = DeadlineExtensionHelper.getDeadlinesBeforeOrEqualToEndTime(
       this.instructorDeadlines,
-      submissionEndTimestamp
+      submissionEndTimestamp,
     );
     return [studentDeadlinesToDelete, instructorDeadlinesToDelete];
   }
@@ -582,34 +586,34 @@ export class InstructorSessionEditPageComponent extends InstructorSessionBasePag
   private getAffectedIndividualModels(
     submissionEndTimestamp: number,
     affectedStudentDeadlines: Record<string, number>,
-    affectedInstructorDeadlines: Record<string, number>
+    affectedInstructorDeadlines: Record<string, number>,
   ): [StudentExtensionTableColumnModel[], InstructorExtensionTableColumnModel[]] {
     const affectedStudents = this.studentsOfCourse.filter((student) => affectedStudentDeadlines[student.email]);
     const affectedInstructors = this.instructorsOfCourse.filter(
-      (instructor) => affectedInstructorDeadlines[instructor.email]
+      (instructor) => affectedInstructorDeadlines[instructor.email],
     );
 
     const affectedStudentModels = DeadlineExtensionHelper.mapStudentsToStudentModels(
       affectedStudents,
       affectedStudentDeadlines,
-      submissionEndTimestamp
+      submissionEndTimestamp,
     );
     const affectedInstructorModels = DeadlineExtensionHelper.mapInstructorsToInstructorModels(
       affectedInstructors,
       affectedInstructorDeadlines,
-      submissionEndTimestamp
+      submissionEndTimestamp,
     );
     return [affectedStudentModels, affectedInstructorModels];
   }
 
   private removeDeadlines(
     students: StudentExtensionTableColumnModel[],
-    instructors: InstructorExtensionTableColumnModel[]
+    instructors: InstructorExtensionTableColumnModel[],
   ): void {
     this.studentDeadlines = DeadlineExtensionHelper.getUpdatedDeadlinesForDeletion(students, this.studentDeadlines);
     this.instructorDeadlines = DeadlineExtensionHelper.getUpdatedDeadlinesForDeletion(
       instructors,
-      this.instructorDeadlines
+      this.instructorDeadlines,
     );
   }
   /**
@@ -629,13 +633,13 @@ export class InstructorSessionEditPageComponent extends InstructorSessionBasePag
       .pipe(
         finalize(() => {
           this.sessionEditFormModel.isDeleting = false;
-        })
+        }),
       )
       .subscribe({
         next: () => {
           this.navigationService.navigateWithSuccessMessage(
             '/web/instructor/sessions',
-            'The feedback session has been deleted. You can restore it from the deleted sessions table below.'
+            'The feedback session has been deleted. You can restore it from the deleted sessions table below.',
           );
         },
         error: (resp: ErrorMessageOutput) => {
@@ -660,7 +664,7 @@ export class InstructorSessionEditPageComponent extends InstructorSessionBasePag
       .pipe(
         finalize(() => {
           this.isLoadingFeedbackQuestions = false;
-        })
+        }),
       )
       .subscribe({
         next: (response: FeedbackQuestions) => {
@@ -773,7 +777,7 @@ export class InstructorSessionEditPageComponent extends InstructorSessionBasePag
       .pipe(
         finalize(() => {
           questionEditFormModel.isSaving = false;
-        })
+        }),
       )
       .subscribe({
         next: (updatedQuestion: FeedbackQuestion) => {
@@ -870,7 +874,7 @@ export class InstructorSessionEditPageComponent extends InstructorSessionBasePag
       .pipe(
         finalize(() => {
           questionEditFormModel.isDuplicating = false;
-        })
+        }),
       )
       .subscribe({
         next: (newQuestion: FeedbackQuestion) => {
@@ -891,8 +895,8 @@ export class InstructorSessionEditPageComponent extends InstructorSessionBasePag
     const modalRef: NgbModalRef = this.simpleModalService.openConfirmationModal(
       'Delete the question?',
       SimpleModalType.DANGER,
-      'Warning: Deleted question cannot be recovered. ' +
-        '<b>All existing responses for this question to be deleted.</b>'
+      'Warning: Deleted question cannot be recovered. '
+        + '<b>All existing responses for this question to be deleted.</b>',
     );
     modalRef.result.then(
       () => {
@@ -903,7 +907,7 @@ export class InstructorSessionEditPageComponent extends InstructorSessionBasePag
           .pipe(
             finalize(() => {
               questionEditFormModel.isDeleting = false;
-            })
+            }),
           )
           .subscribe({
             next: () => {
@@ -919,7 +923,7 @@ export class InstructorSessionEditPageComponent extends InstructorSessionBasePag
             },
           });
       },
-      () => {}
+      () => {},
     );
   }
 
@@ -954,12 +958,12 @@ export class InstructorSessionEditPageComponent extends InstructorSessionBasePag
                 showGiverNameTo: question.showGiverNameTo,
                 showRecipientNameTo: question.showRecipientNameTo,
               });
-            })
+            }),
           )
           .pipe(
             finalize(() => {
               this.isAddingFromTemplate = false;
-            })
+            }),
           )
           .subscribe({
             next: (newQuestion: FeedbackQuestion) => {
@@ -978,7 +982,7 @@ export class InstructorSessionEditPageComponent extends InstructorSessionBasePag
             },
           });
       },
-      () => {}
+      () => {},
     );
   }
 
@@ -1033,9 +1037,9 @@ export class InstructorSessionEditPageComponent extends InstructorSessionBasePag
         this.feedbackQuestionsService.getAllowedFeedbackPaths(type);
       // inherit feedback path if applicable
       if (
-        newQuestionAllowedFeedbackPaths.has(lastQuestionEditFormModel.giverType) &&
+        newQuestionAllowedFeedbackPaths.has(lastQuestionEditFormModel.giverType)
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        newQuestionAllowedFeedbackPaths
+        && newQuestionAllowedFeedbackPaths
           .get(lastQuestionEditFormModel.giverType)!
           .indexOf(lastQuestionEditFormModel.recipientType) !== -1
       ) {
@@ -1050,7 +1054,7 @@ export class InstructorSessionEditPageComponent extends InstructorSessionBasePag
       const newQuestionVisibilityStateMachine: VisibilityStateMachine =
         this.feedbackQuestionsService.getNewVisibilityStateMachine(
           this.newQuestionEditFormModel.giverType,
-          this.newQuestionEditFormModel.recipientType
+          this.newQuestionEditFormModel.recipientType,
         );
       // inherit visibility settings if applicable, the state machine will automatically filter out invalid choices
       newQuestionVisibilityStateMachine.applyVisibilitySettings({
@@ -1064,13 +1068,13 @@ export class InstructorSessionEditPageComponent extends InstructorSessionBasePag
         newQuestionVisibilityStateMachine.getVisibilityTypesUnderVisibilityControl(VisibilityControl.SHOW_GIVER_NAME);
       const newQuestionShowRecipientNameTo: FeedbackVisibilityType[] =
         newQuestionVisibilityStateMachine.getVisibilityTypesUnderVisibilityControl(
-          VisibilityControl.SHOW_RECIPIENT_NAME
+          VisibilityControl.SHOW_RECIPIENT_NAME,
         );
 
       let isAllowedToUseInheritedVisibility: boolean = false;
       if (
         this.feedbackQuestionsService.isCustomFeedbackVisibilitySettingAllowed(
-          this.newQuestionEditFormModel.questionType
+          this.newQuestionEditFormModel.questionType,
         )
       ) {
         isAllowedToUseInheritedVisibility = true;
@@ -1078,17 +1082,17 @@ export class InstructorSessionEditPageComponent extends InstructorSessionBasePag
         const commonFeedbackVisibilitySettings: CommonVisibilitySetting[] =
           this.feedbackQuestionsService.getCommonFeedbackVisibilitySettings(
             newQuestionVisibilityStateMachine,
-            this.newQuestionEditFormModel.questionType
+            this.newQuestionEditFormModel.questionType,
           );
         // new question is only allowed to have common visibility settings
         // check whether the inherited settings fall into that or not
         for (const commonVisibilityOption of commonFeedbackVisibilitySettings) {
           if (
-            this.isSameSet(newQuestionShowResponsesTo, commonVisibilityOption.visibilitySettings.SHOW_RESPONSE) &&
-            this.isSameSet(newQuestionShowGiverNameTo, commonVisibilityOption.visibilitySettings.SHOW_GIVER_NAME) &&
-            this.isSameSet(
+            this.isSameSet(newQuestionShowResponsesTo, commonVisibilityOption.visibilitySettings.SHOW_RESPONSE)
+            && this.isSameSet(newQuestionShowGiverNameTo, commonVisibilityOption.visibilitySettings.SHOW_GIVER_NAME)
+            && this.isSameSet(
               newQuestionShowRecipientNameTo,
-              commonVisibilityOption.visibilitySettings.SHOW_RECIPIENT_NAME
+              commonVisibilityOption.visibilitySettings.SHOW_RECIPIENT_NAME,
             )
           ) {
             isAllowedToUseInheritedVisibility = true;
@@ -1138,7 +1142,7 @@ export class InstructorSessionEditPageComponent extends InstructorSessionBasePag
       .pipe(
         finalize(() => {
           this.newQuestionEditFormModel.isSaving = false;
-        })
+        }),
       )
       .subscribe({
         next: (newQuestion: FeedbackQuestion) => {
@@ -1169,7 +1173,7 @@ export class InstructorSessionEditPageComponent extends InstructorSessionBasePag
       .pipe(
         finalize(() => {
           this.isCopyingQuestion = false;
-        })
+        }),
       )
       .subscribe({
         next: (response: FeedbackSessions) => {
@@ -1221,14 +1225,14 @@ export class InstructorSessionEditPageComponent extends InstructorSessionBasePag
                 }),
                 finalize(() => {
                   this.isCopyingQuestion = false;
-                })
+                }),
               )
               .subscribe({
                 next: (newQuestion: FeedbackQuestion) => {
                   this.questionEditFormModels.push(this.getQuestionEditFormModel(newQuestion));
                   this.feedbackQuestionModels.set(newQuestion.feedbackQuestionId, newQuestion);
                   this.statusMessageService.showSuccessToast(
-                    'The selected question(s) have been added to this feedback session.'
+                    'The selected question(s) have been added to this feedback session.',
                   );
                 },
                 error: (resp: ErrorMessageOutput) => {
