@@ -113,6 +113,8 @@
               [sessionsTableRowModelsSortOrder]="courseTabModel.sessionsTableRowModelsSortOrder"
               [courseCandidates]="courseCandidates" [headerColorScheme]="SessionsTableHeaderColorScheme.WHITE"
               [columnsToShow]="[ SessionsTableColumn.START_DATE, SessionsTableColumn.END_DATE ]"
+              id = "sessions-table-{{ idx }}"
+              [mainTableStyle]="setMainTableStyle"
               [isSendReminderLoading]="isSendReminderLoading"
               (sortSessionsTableRowModelsEvent)="sortSessionsTableRowModelsEvent(idx, $event)"
               (loadResponseRateEvent)="loadResponseRateEventHandler(idx, $event)"

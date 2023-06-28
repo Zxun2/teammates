@@ -1,4 +1,5 @@
 import { FeedbackSession, InstructorPermissionSet } from '../../../types/api-output';
+import { ColumnData, SortableTableCellData } from '../sortable-table/sortable-table.component';
 
 /**
  * The model for a row of the sessions table.
@@ -52,6 +53,16 @@ export const SessionsTableColumnNames = new Map<SessionsTableColumn, string>([
   [SessionsTableColumn.END_DATE, 'End Date'],
   [SessionsTableColumn.RESPONSE_RATE, 'Response Rate'],
 ]);
+
+/** Generate header. */
+export interface SessionsTableColumnData extends ColumnData {
+  columnType: SessionsTableColumn;
+}
+
+/** Generate Row. */
+export interface SessionsTableRowData extends SortableTableCellData {
+  columnType: SessionsTableColumn;
+}
 
 /**
  * The color scheme of the header of the table
