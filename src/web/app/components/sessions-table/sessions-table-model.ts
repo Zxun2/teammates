@@ -66,12 +66,12 @@ export const SessionsTableColumnNames = new Map<SessionsTableColumn, string>([
 
 /** Generate header. */
 export interface SessionsTableColumnData extends ColumnData {
-  columnType: SessionsTableColumn;
+  columnType?: SessionsTableColumn;
 }
 
 /** Generate Row. */
 export interface SessionsTableRowData extends SortableTableCellData {
-  columnType: SessionsTableColumn;
+  columnType?: SessionsTableColumn;
 }
 
 /**
