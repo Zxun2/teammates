@@ -109,11 +109,10 @@
             <tm-sessions-table
               *tmIsLoading="!courseTabModel.hasPopulated"
               [sessionsTableRowModels]="courseTabModel.sessionsTableRowModels"
-              [sessionsTableRowModelsSortBy]="courseTabModel.sessionsTableRowModelsSortBy"
-              [sessionsTableRowModelsSortOrder]="courseTabModel.sessionsTableRowModelsSortOrder"
               [courseCandidates]="courseCandidates" [headerColorScheme]="SessionsTableHeaderColorScheme.WHITE"
               [columnsToShow]="[ SessionsTableColumn.START_DATE, SessionsTableColumn.END_DATE ]"
               id = "sessions-table-{{ idx }}"
+              [initialSortBy]="initialSortBy"
               [mainTableStyle]="setMainTableStyle"
               [isSendReminderLoading]="isSendReminderLoading"
               (sortSessionsTableRowModelsEvent)="sortSessionsTableRowModelsEvent(idx, $event)"
