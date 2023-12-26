@@ -6,8 +6,8 @@ html {
 }
 
 body {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: .875rem;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 0.875rem;
 }
 
 ul {
@@ -41,21 +41,21 @@ h5,
 
 h6,
 .h6 {
-  font-size: .875rem;
+  font-size: 0.875rem;
 }
 
 .btn,
 .form-control,
 .dropdown-item {
-  font-size: .875rem;
+  font-size: 0.875rem;
 }
 
 .color-orange {
-  color: #E46D0B;
+  color: #e46d0b;
 }
 
 .color-blue {
-  color: #4379D1;
+  color: #4379d1;
 }
 
 .hidden {
@@ -74,7 +74,7 @@ h6,
 }
 
 .modal-header {
-  padding: .75rem 1rem;
+  padding: 0.75rem 1rem;
   word-break: break-word !important;
   word-wrap: break-word !important;
 }
@@ -86,7 +86,7 @@ h6,
 }
 
 .modal-footer {
-  padding: .3rem .5rem;
+  padding: 0.3rem 0.5rem;
 }
 
 .modal-dialog {
@@ -96,10 +96,11 @@ h6,
   max-width: 70vw;
   min-width: 30vw;
   scrollbar-width: none; // Firefox
-  -ms-overflow-style: none;  // IE10+
+  -ms-overflow-style: none; // IE10+
   vertical-align: middle;
 
-  &::-webkit-scrollbar { // Webkit-based browsers
+  &::-webkit-scrollbar {
+    // Webkit-based browsers
     width: 0;
     height: 0;
   }
@@ -131,7 +132,7 @@ h6,
 
   & th,
   td {
-    padding: .5rem;
+    padding: 0.5rem;
   }
 }
 
@@ -142,7 +143,7 @@ h6,
 .card-header {
   align-items: center;
   display: flex;
-  padding: .5rem 1rem;
+  padding: 0.5rem 1rem;
 }
 
 .card-header-btn-toolbar {
@@ -155,23 +156,39 @@ h6,
   }
 
   .btn-primary {
-    background-color: darken(#007BFF, 5%); // 5% darker than primary
+    background-color: darken(#007bff, 5%); // 5% darker than primary
   }
 
   .btn-secondary {
-    background-color: darken(#6C757D, 10%); // 10% darker than secondary
+    background-color: darken(#6c757d, 10%); // 10% darker than secondary
   }
 }
 
 .dropdown-item {
   &:focus,
   &:hover {
-    background-color: #DAE0E5;
+    background-color: #dae0e5;
   }
 }
 
+.form-control::-webkit-input-placeholder {
+  opacity: 0.7;
+}
+
+.form-control::-moz-placeholder {
+  opacity: 0.7;
+}
+
+.form-control:-ms-input-placeholder {
+  opacity: 0.7;
+}
+
+.form-control::-ms-input-placeholder {
+  opacity: 0.7;
+}
+
 .form-control::placeholder {
-  opacity: .7;
+  opacity: 0.7;
 }
 
 .text-preserve-space {
@@ -183,16 +200,19 @@ h6,
 }
 
 .ngb-tooltip-class {
-  text-decoration: underline dotted #808080;
+  -webkit-text-decoration: underline dotted #808080;
+          text-decoration: underline dotted #808080;
 
   &:hover {
-    text-decoration: underline dotted #000;
+    -webkit-text-decoration: underline dotted #000;
+            text-decoration: underline dotted #000;
   }
 }
 
 .modal-window-class {
   color: #000;
-  text-decoration: underline dashed #000;
+  -webkit-text-decoration: underline dashed #000;
+          text-decoration: underline dashed #000;
   cursor: pointer;
 }
 
@@ -209,10 +229,10 @@ h6,
 }
 
 .btn-light {
-  border: 1px solid #DDD;
+  border: 1px solid #ddd;
 
   &[disabled] {
-    border: 1px solid #EEE;
+    border: 1px solid #eee;
   }
 }
 
@@ -238,7 +258,7 @@ h6,
 }
 
 .fa-sort {
-  color: #CCC;
+  color: #ccc;
 }
 
 .fa-sort,
@@ -262,22 +282,27 @@ h6,
 
 .handsontable .invalid-row,
 .red-box {
-  background: #F19491;
+  background: #f19491;
+}
+
+.handsontable .edit-row,
+.blue-box {
+  background: #91f1e9;
 }
 
 .handsontable .new-row,
 .green-box {
-  background: #AEEBA6;
+  background: #aeeba6;
 }
 
 .handsontable .modified-row,
 .yellow-box {
-  background: #FCF4B3;
+  background: #fcf4b3;
 }
 
 .handsontable .unchanged-row,
 .grey-box {
-  background: #DDD;
+  background: #ddd;
 }
 
 .handsontable .valid-row {
@@ -295,7 +320,7 @@ h6,
 }
 
 label {
-  margin-bottom: .5rem;
+  margin-bottom: 0.5rem;
 }
 
 .form-group {
@@ -306,6 +331,6 @@ label {
 
 // overrides default bootstrap colours to increase contrast
 .navbar-dark {
-  --bs-navbar-color: rgba(255, 255, 255, .75);
+  --bs-navbar-color: rgba(255, 255, 255, 0.75);
   --bs-navbar-hover-color: white;
 }
