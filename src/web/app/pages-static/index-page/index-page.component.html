@@ -1,108 +1,193 @@
-<p class="h2 color-orange text-center">
-  Student peer evaluations/feedback, shareable instructor comments, and more...
-</p>
-<div class="text-center">
-  <img class="mx-auto" alt="Overview of TEAMMATES - anonymous peer feedback and confidential peer evaluations" src="assets/images/overview.png">
-</div>
-<p class="h4 color-blue text-center">
-  <span class="color-orange">{{ submissionsNumber }}</span> feedback entries submitted so far ...
-</p>
-<div class="row mb-5">
-  <div class="margin-bottom-10px button-center col-xs-10 offset-xs-1 col-sm-5 offset-sm-0 col-md-4 col-lg-3 d-grid">
-    <a class="btn btn-success" tmRouterLink="/web/front/request">Request a Free Instructor Account</a>
-  </div>
-</div>
+<section class="landing">
+  <div class="container">
+    <h1 class="text-center mb-4 color-orange">
+      Student Peer Evaluations/Feedback, Shareable Instructor Comments, <br />
+      and More...
+    </h1>
 
-<div class="row">
-  <div class="col-xs-12 col-sm-3 text-center">
-    <img alt="TEAMMATES - Praised by Users" src="assets/images/overview_praise.png">
-  </div>
-  <div class="col-xs-12 col-sm-8 padding-top-10px">
-    <h2>Praised by Users:</h2>
-    <span *ngIf="testimonial">
-      {{ testimonial.content }}<br>
-      - {{ testimonial.author }}
-    </span>
-  </div>
-</div>
+    <div class="text-center">
+      <img
+        class="landing-image"
+        alt="Overview of TEAMMATES - anonymous peer feedback and confidential peer evaluations"
+        src="assets/images/overview.png"
+      />
+    </div>
 
-<div class="row">
-  <div class="col-xs-12 col-sm-3 text-center">
-    <img alt="TEAMMATES - Award winning, mature, field-tested and improving all the time" src="assets/images/overview_award_winning.png">
-  </div>
-  <div class="col-xs-12 col-sm-8 padding-top-10px">
-    <h2>Award Winning, Mature, Field-tested:</h2>
-    <p>
-      TEAMMATES has been in operation since 2010. It has benefitted from the work of <a tmRouterLink="/web/front/about">hundreds of developers</a>.<br>
-      TEAMMATES won the Grand Prize at the OSS Awards World Challenge 2014 and was selected as a mentoring organization for Google Summer of Code Program (2014-2018) and Facebook Open Academy Program (2016).
-    </p>
-  </div>
-</div>
+    <h4 class="text-center mb-3">
+      <span class="color-orange">{{ submissionsNumber }}</span> feedback entries
+      submitted so far...
+    </h4>
 
-<div class="row">
-  <div class="col-xs-12 col-sm-3 text-center">
-    <img alt="TEAMMATES - Designed for simplicity, flexibility, power" src="assets/images/overview_peerfeedback.png">
-  </div>
-  <div class="col-xs-12 col-sm-8 padding-top-10px">
-    <h2>Designed for Simplicity, Flexibility, and Power:</h2>
-    <p>
-      TEAMMATES was designed by a team of teachers and students, for teachers and students.
-      It aims to provide a powerful peer feedback and peer evaluations mechanism with a very high degree of flexibility.
-      <a tmRouterLink="/web/front/features">More about our features...</a>
-    </p>
-  </div>
-</div>
+    <div class="row mb-5">
+      <div
+        class="col-10 offset-1 col-sm-5 offset-sm-0 col-md-4 col-lg-3 mx-auto"
+      >
+        <a
+          class="btn btn-success btn-lg btn-block"
+          tmRouterLink="/web/front/request"
+          >Request a Free Instructor Account</a
+        >
+      </div>
+    </div>
 
-<div class="row">
-  <div class="col-xs-12 col-sm-3 text-center">
-    <img alt="TEAMMATES - Powered by Google Infrastructure" src="assets/images/overview_google.png">
-  </div>
-  <div class="col-xs-12 col-sm-8 padding-top-10px">
-    <h2>Powered by Google Infrastructure:</h2>
-    <p>
-      TEAMMATES runs on the <a href="https://cloud.google.com/products/" target="_blank" rel="noopener noreferrer">Google App Engine</a>,
-      using cutting edge cloud technologies and benefitting from the same systems and infrastructure that power Google's applications.
-    </p>
-  </div>
-</div>
+    <div class="text-center block mb-5">
+      <p class="h1 text-bold text-center mb-4 color-orange">
+        Hear what our users have to say
+      </p>
+      <p class="text-lg h5 block text-center" *ngIf="testimonial">
+        {{ testimonial.content }}<br />- {{ testimonial.author }}
+      </p>
+    </div>
 
-<div class="row">
-  <div class="col-xs-12 col-sm-3 text-center">
-    <img alt="TEAMMATES - Growing global community" src="assets/images/overview_countries.png">
-  </div>
-  <div class="col-xs-12 col-sm-8 padding-top-10px">
-    <h2>Growing Global Community:</h2>
-    <p>
-      TEAMMATES community is growing fast. Since its inception in 2010, TEAMMATES has benefitted over 800,000 users from over 1,100 universities from over 100 countries across the globe.
-    </p>
-  </div>
-</div>
+    <p class="h1 text-bold text-center color-orange">Features</p>
 
-<div class="row">
-  <div class="col-xs-12 col-sm-3 text-center">
-    <img alt="TEAMMATES - Not for Profit" src="assets/images/overview_funding.png">
-  </div>
-  <div class="col-xs-12 col-sm-8 padding-top-10px">
-    <h2>Not for Profit:</h2>
-    <p>
-      TEAMMATES does not have commercial ambitions. It is funded mainly by education grants from the National University of Singapore.
-      TEAMMATES also received funding support under the <a href="https://summerofcode.withgoogle.com/" target="_blank" rel="noopener noreferrer">Google Summer of Code</a> program in 2014-2018.
-    </p>
-  </div>
-</div>
+    <div class="row mb-4">
+      <div class="col-md-6">
+        <div class="d-flex align-items-center mb-3">
+          <img
+            class="landing-icon"
+            alt="TEAMMATES - Designed for simplicity, flexibility, power"
+            src="assets/images/overview_peerfeedback.png"
+          />
+          <h2 class="ml-3">Designed for Simplicity, Flexibility, and Power</h2>
+        </div>
 
-<div class="row">
-  <div class="col-xs-12 col-sm-3 text-center">
-    <img alt="TEAMMATES - Well received by Academic community" src="assets/images/overview_conference.png">
+        <p>
+          TEAMMATES was designed by a team of teachers and students, for
+          teachers and students. It aims to provide a powerful peer feedback and
+          peer evaluations mechanism with a very high degree of flexibility.
+          <a tmRouterLink="/web/front/features">More about our features...</a>
+        </p>
+      </div>
+
+      <div class="col-md-6">
+        <div class="d-flex align-items-center mb-3">
+          <img
+            class="landing-icon"
+            alt="TEAMMATES - Powered by Google Infrastructure"
+            src="assets/images/overview_google.png"
+          />
+          <h2 class="ml-3">Powered by Google Infrastructure</h2>
+        </div>
+
+        <p>
+          TEAMMATES runs on the
+          <a
+            href="https//cloud.google.com/products/"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Google App Engine</a
+          >, using cutting-edge cloud technologies and benefiting from the same
+          systems and infrastructure that power Google's applications.
+        </p>
+      </div>
+    </div>
+
+    <div class="row mb-4">
+      <div class="col-md-6">
+        <div class="d-flex align-items-center mb-3">
+          <img
+            class="landing-icon"
+            alt="TEAMMATES - Growing global community"
+            src="assets/images/overview_countries.png"
+          />
+          <h2 class="ml-3">Growing Global Community</h2>
+        </div>
+
+        <p>
+          TEAMMATES community is growing fast. Since its inception in 2010,
+          TEAMMATES has benefited over 800,000 users from over 1,100
+          universities from over 100 countries across the globe.
+        </p>
+      </div>
+
+      <div class="col-md-6">
+        <div class="d-flex align-items-center mb-3">
+          <img
+            class="landing-icon"
+            alt="TEAMMATES - Not for Profit"
+            src="assets/images/overview_funding.png"
+          />
+          <h2 class="ml-3">Not for Profit</h2>
+        </div>
+
+        <p>
+          TEAMMATES does not have commercial ambitions. It is funded mainly by
+          education grants from the National University of Singapore. TEAMMATES
+          also received funding support under the
+          <a
+            href="https//summerofcode.withgoogle.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Google Summer of Code</a
+          >
+          program in 2014-2018.
+        </p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="d-flex align-items-center mb-3">
+          <img
+            class="landing-icon"
+            alt="TEAMMATES - Award winning, mature, field-tested and improving all the time"
+            src="assets/images/overview_award_winning.png"
+          />
+          <h2 class="ml-3">Award Winning, Mature, Field-tested</h2>
+        </div>
+
+        <p>
+          TEAMMATES has been in operation since 2010. It has benefited from the
+          work of
+          <a tmRouterLink="/web/front/about">hundreds of developers</a>.
+          TEAMMATES won the Grand Prize at the OSS Awards World Challenge 2014
+          and was selected as a mentoring organization for Google Summer of Code
+          Program (2014-2018) and Facebook Open Academy Program (2016).
+        </p>
+      </div>
+
+      <div class="col-md-6">
+        <div class="d-flex align-items-center mb-3">
+          <img
+            class="landing-icon"
+            alt="TEAMMATES - Well received by Academic community"
+            src="assets/images/overview_conference.png"
+          />
+          <h2 class="ml-3">Well Received by the Academic Community</h2>
+        </div>
+
+        <p>
+          TEAMMATES has been presented, and well-received, in education-related
+          conferences such as the
+          <a
+            href="https//conferences.computer.org/cseet/2011/CSEET_2011/"
+            target="_blank"
+            rel="noopener noreferrer"
+            >International Conference on Software Engineering Education and
+            Training (CSEET)</a
+          >, the
+          <a
+            href="http//www.cdtl.nus.edu.sg/Tlhe/tlhe2011/default.htm"
+            target="_blank"
+            rel="noopener noreferrer"
+            >International Conference on Teaching and Learning in Higher
+            Education (TLHE)</a
+          >, the
+          <a
+            href="https//iated.org/archive/edulearn13"
+            target="_blank"
+            rel="noopener noreferrer"
+            >EDULEARN13 Conference (Spain)</a
+          >, and the
+          <a
+            href="http//cdtl.nus.edu.sg/tel2013/"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Tel2013 Symposium (Singapore)</a
+          >.
+        </p>
+      </div>
+    </div>
   </div>
-  <div class="col-xs-12 col-sm-8 padding-top-10px">
-    <h2>Well Received by the Academic Community:</h2>
-    <p>
-      TEAMMATES has been presented, and well-received, in education-related conferences such as the
-      <a href="https://conferences.computer.org/cseet/2011/CSEET_2011/" target="_blank" rel="noopener noreferrer">International Conference on Software Engineering Education and Training (CSEET)</a>,
-      the <a href="http://www.cdtl.nus.edu.sg/Tlhe/tlhe2011/default.htm" target="_blank" rel="noopener noreferrer">International Conference on Teaching and Learning in Higher Education (TLHE)</a>,
-      the <a href="https://iated.org/archive/edulearn13" target="_blank" rel="noopener noreferrer">EDULEARN13 Conference (Spain)</a>,
-      and the <a href="http://cdtl.nus.edu.sg/tel2013/" target="_blank" rel="noopener noreferrer">Tel2013 Symposium (Singapore)</a>.
-    </p>
-  </div>
-</div>
+</section>
